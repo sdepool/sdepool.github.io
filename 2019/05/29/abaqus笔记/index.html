@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="abaqusabaqus 无单位换算，软件里不存在单位制。ansys有 退回功能，模型树中把已有的步骤删除 划分网格的方法（转） 独立实体（independent instance）和非独立实体(dependent instance)对非独立实体划分网格时，应在窗口顶部的环境栏中把Object选项设为part,即对部件划分网格；对独立实体划分网格时, 应在窗口顶部的环境栏中把Object选项设为a">
+<meta name="keywords" content="structure,fea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="abaqus笔记">
+<meta property="og:url" content="http://yoursite.com/2019/05/29/abaqus笔记/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="abaqusabaqus 无单位换算，软件里不存在单位制。ansys有 退回功能，模型树中把已有的步骤删除 划分网格的方法（转） 独立实体（independent instance）和非独立实体(dependent instance)对非独立实体划分网格时，应在窗口顶部的环境栏中把Object选项设为part,即对部件划分网格；对独立实体划分网格时, 应在窗口顶部的环境栏中把Object选项设为a">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-07T01:53:36.761Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="abaqus笔记">
+<meta name="twitter:description" content="abaqusabaqus 无单位换算，软件里不存在单位制。ansys有 退回功能，模型树中把已有的步骤删除 划分网格的方法（转） 独立实体（independent instance）和非独立实体(dependent instance)对非独立实体划分网格时，应在窗口顶部的环境栏中把Object选项设为part,即对部件划分网格；对独立实体划分网格时, 应在窗口顶部的环境栏中把Object选项设为a">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/05/29/abaqus笔记/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>abaqus笔记 | 沧海一粟</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">心生于世，世释于心</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/29/abaqus笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sdepool">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">abaqus笔记
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-29 08:34:55" itemprop="dateCreated datePublished" datetime="2019-05-29T08:34:55+08:00">2019-05-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-07 09:53:36" itemprop="dateModified" datetime="2019-08-07T09:53:36+08:00">2019-08-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/structure/" itemprop="url" rel="index"><span itemprop="name">structure</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/05/29/abaqus笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/29/abaqus笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="abaqus"><a href="#abaqus" class="headerlink" title="abaqus"></a>abaqus</h2><p>abaqus 无单位换算，软件里不存在单位制。ansys有</p>
+<p>退回功能，模型树中把已有的步骤删除</p>
+<h2 id="划分网格的方法（转）"><a href="#划分网格的方法（转）" class="headerlink" title="划分网格的方法（转）"></a>划分网格的方法（转）</h2><ol>
+<li><p>独立实体（independent instance）和非独立实体(dependent instance)<br>对非独立实体划分网格时，应在窗口顶部的环境栏中把Object选项设为part,即对部件划分网格；对独立实体划分网格时, 应在窗口顶部的环境栏中把Object选项设为assembly, 即对装配件划分网格  </p>
+</li>
+<li><p>网格单元形状<br>在MESH功能模块中，Mesh—Controls，弹出Mesh Controls对话框，其中可选择单元形状。</p>
+<ol>
+<li><p>2D问题，有以下可供选择的单元形状。</p>
+<ul>
+<li>Quad：网格中完全使用四边形单元；</li>
+<li>Quad-dominated:网格中主要使用四边形单元，但在过渡区域允许出现三角形单元。选择Quad-dominated类型更容易实现从粗网格到细网格的过渡；</li>
+<li>Tri:网格中完全使用三角形单元；</li>
+</ul>
+</li>
+<li><p>对于3D问题，包括以下可供选择的单元形状：</p>
+<ul>
+<li>Hex:网格中完全使用六面体单元；</li>
+<li>Hex-dominated:网格中主要使用六面体单元，但在过渡区域允许出现楔形（三棱柱）单元；</li>
+<li>Tet:网格中完全使用四面体单元；</li>
+<li>Wedge:网格中完全使用楔形单元；</li>
+</ul>
+<p>Quad(2D问题)和Hex（3D问题）可以用较小的计算代价得到较高的精度，应尽可能选择这两种单元。</p>
+</li>
+</ol>
+</li>
+<li><p>网格划分技术</p>
+<p> Structured(结构化网格)：采用结构化网格的区域显示为<strong>绿色</strong>； Sweep(扫掠网格)：采用扫掠网格的区域显示为<strong>黄色</strong>； Free(自由网格)：采用自由网格的区域显示为<strong>粉红色</strong></p>
+<p> 自由网格技术采用Tri和Tet，一般应选择带内部节点的二次单元来保证精度；结构化网格和扫掠网格一般采用Quad和Hex单元，分析精度相对较高。</p>
+</li>
+<li><p>划分网格的算法</p>
+<p> 使用Quad和Hex单元划分网格时，有两种可供选择的算法：Medial Axis(中性轴算法)和Advancing Front(进阶算法)。</p>
+<ul>
+<li>Medial Axis(中性轴算法)：首先把要划分网格的区域分成一些简单的区域，然后使用结构化网格划分技术来为简单区域划分网格。Medial Axis(中性轴算法)算法有以下特性：<ul>
+<li>使用Medial Axis(中性轴算法)更容易得到单元形状规则的网格，但网格和种子的位置吻合较差；</li>
+<li>在二维模型中使用Medial Axis(中性轴算法)，选择Minimize the mesh transition(最小化网格过渡)，可以提高网格的质量，但使用这种方法生成的网格更容易偏离种子。</li>
+<li>如果在模型的一部分边上定义了受完全约束的种子，Medial Axis(中性轴算法)会自动为其他的边选择最佳的种子分布；</li>
+<li>Medial Axis算法不支持由CAD模型导入的不精确模型和虚拟拓扑。</li>
+</ul>
+</li>
+<li>Advancing Front(进阶算法)：首先在边界上生成四边形网格，然后再向区域内部扩展。具有以下特性：<ul>
+<li>使用Advancing Front算法得到的网格可以和种子的位置吻合的很好，但在较窄的区域内，精确匹配每粒种子可能使网格歪斜；</li>
+<li>使用Advancing Front算法更容易得到单元大小均匀的网格。在Explicite，网格的小单元会限制增量步长。</li>
+<li>使用Advancing Front算法更容易得到从粗网格到细网格的过渡；  </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>网格划分失败的解决方法</p>
+<ul>
+<li><p>在Mesh模块中，主菜单Tools-Query下的Geometry Diagnostics,检查模型中是否有自由边、短边、小平面、小尖角或微小的缝隙。如果几何部件是由CAD模型导入的，则应注意检查是否模型本身有问题；如果几何部件是ABAQUS/CAE中创建的，应注意拉伸、切割操作，由于几何坐标的误差，出现的问题。</p>
+</li>
+<li><p>在Mesh模块中，主菜单Tools-Virtual Topology(虚拟拓扑)来合并小的边或面，或忽略某些边或顶点；如下图。</p>
+</li>
+<li><p>在Part模块中，主菜单Tools-Repair,可以修复存在的几何问题，例如可以选择Face/Replace faces来合并面<br>4）无法生成网格的位置加密种子；  </p>
+</li>
+</ul>
+</li>
+</ol>
+<p>7.选择三维实体单元的类型</p>
+<p>7.1 节点数目和插值阶数（分以下三种）<br>1线性单元：仅在单元角点处布置节点，在各个方向都采用线性插值； 2）二次单元：在每条边上有中间节点，采用二次插值；<br>3）二次修正单元：只有Tri和Tet使用这种网格。在每条边上有中间节点，采用修正二次插值；<br>7.2 线性完全积分单元<br>Meh-element type,保持Linear参数，就可以设置线性完全积分单元。如CPS4单元（四节点四边形双线性平面应力线性单元）；C3D8单元（8节点六面体线性完全积分单元）。所谓“完全积分”指单元具有规则形状时，所用的高斯积分点的数目足以对单元刚度矩阵中多项式进行精确积分。承受弯曲载荷时，线性完全积分单元会出现剪切自锁问题，造成单元过度刚硬，即使划分很细的网格，计算结果也不理想。</p>
+<p>7.3二次完全积分单元<br>CPS8：8节点四边形二次平面应力完全积分单元； C3D20：20节点六面体二次完全积分单元； 二次完全积分单元优点：<br>1）对应力的计算结构很准确，适合模拟应力集中问题； 2）一般情况下没有剪力自锁问题；<br>应用二次完全积分单元应注意以下问题： 1）不能用于接触分析；<br>2）对于弹塑性分析，如果材料是不可压缩的（如金属），则容易产生体积自锁； 3）当单元发生扭曲或弯曲应力有梯度时，有可能出现某种程度的自锁；<br>7.4 线性减缩积分单元<br>对于Quad单元和Tex单元，ABAQUS/CAE默认使用线性减缩积分单元。如CPS4R(四节点四边形双线性平面应力线性减缩积分单元)；C3D8R(8节点6面体线性减缩积分单元)。<br>线性减缩积分单元比普通的完全积分单元在积分方向上少一个积分点。线性减缩积分单元只在单元的中心点有个积分点，故存在“沙漏”问题。采用线性减缩积分单元模拟承受弯曲载荷时，沿厚度方向至少应划分四个单元。</p>
+<p>线性减缩积分单元有以下优点：<br>1）对位移的求解结果较准确；2）网格存在扭曲变形时，求解的结果不会受到大影响；3）在弯曲载<br>荷下不容易发生剪切自锁。</p>
+<p>缺点：1）需要划分较细的网格来克服沙漏现象；2）不适合模拟应力集中问题。因为线性减缩积分只在单元的中心点有一个积分点，相当于常应力单元，它在积分点上的应力结果是准确的，而经过外插值和平均后的节点应力是不准确。</p>
+<p>7.2 二次减缩积分单元<br>对于Quad单元和Tex单元，也可采用二次减缩积分单元。CPS8R(四节点四边形二次平面应力线性减缩积分单元)；C3D20R(20节点6面体二次减缩积分单元)。</p>
+<p>优点：1）不会出现严重的沙漏现象；2）复杂应力状态下，对自锁现象不敏感；<br>同时使用二次减缩积分单元应注意的问题：1）不能在接触分析中使用；2）不适合大应变问题；3）节点应力结果往往低于二次完全积分单元。</p>
+<p>7.3 非协调模式单元<br>对于Quad和Tex单元，也可设置非协调模式单元。仅在ABAQUS/Standard有非协调模式单元，其目的是克服线性完全积分剪切自锁问题。</p>
+<p>优点：1）克服剪切自锁问题，在单元扭曲较小情况下，所得的位移和应力结果较准确；2）在模拟弯曲问题，在厚度方向只需很少的单元，就可以得到与二次单元相同的结果；3）使用了增强变形梯度的非协调模式单元，单元交界处不会重叠和开洞，因此容易扩展到非线性、有限应变的位移。</p>
+<a id="more"></a>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/structure/" rel="tag"># structure</a>
+          
+            <a href="/tags/fea/" rel="tag"># fea</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/23/ansys笔记/" rel="next" title="ansys教程">
+                <i class="fa fa-chevron-left"></i> ansys教程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/17/结构笔记/" rel="prev" title="结构笔记">
+                结构笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Sdepool</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/sdepool" title="GitHub &rarr; https://github.com/sdepool" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:sdepool@hotmail.com" title="E-Mail &rarr; mailto:sdepool@hotmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#abaqus"><span class="nav-number">1.</span> <span class="nav-text">abaqus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#划分网格的方法（转）"><span class="nav-number">2.</span> <span class="nav-text">划分网格的方法（转）</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sdepool</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '2WUpmvigo5M3l6EHmVE9OFOx-gzGzoHsz',
+    appKey: 'z0OysgGP6kQhqVvc0rTm60PI',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
